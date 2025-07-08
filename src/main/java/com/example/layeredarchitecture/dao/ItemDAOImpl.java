@@ -75,4 +75,20 @@ public class ItemDAOImpl {
         Collections.sort(tempItemsList, (o1, o2) -> o1.getCode().compareTo(o2.getCode()));
         return tempItemsList.get(tempItemsList.size() - 1).getCode();
     }
+
+    public ItemDTO searchItem(String code) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Item WHERE code=?");
+        pstm.setString(1, code);
+        ResultSet rst = pstm.executeQuery();
+        if (rst.next()) {
+            return new ItemDTO(
+                rst.getString("code"),
+                rst.getString("description"),
+                rst.getBigDecimal("unitPrice"),
+                rst.getInt("qtyOnHand")
+            );
+        }
+        return null;
+    }
 }

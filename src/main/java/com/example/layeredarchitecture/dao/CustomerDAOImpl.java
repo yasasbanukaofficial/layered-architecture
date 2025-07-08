@@ -72,4 +72,15 @@ public class CustomerDAOImpl {
         Collections.sort(tempCustomersList);
         return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
+
+    public CustomerDTO searchCustomer(String newValue) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = connection.prepareStatement("SELECT * FROM Customer WHERE id=?");
+        pstm.setString(1, newValue + "");
+        ResultSet rst = pstm.executeQuery();
+        if (rst.next()) {
+            return new CustomerDTO(newValue + "", rst.getString("name"), rst.getString("address"));
+        }
+        return null;
+    }
 }
