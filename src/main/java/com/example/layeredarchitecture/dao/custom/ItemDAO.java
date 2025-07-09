@@ -1,14 +1,11 @@
-package com.example.layeredarchitecture.dao;
+package com.example.layeredarchitecture.dao.custom;
 
-import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
 import com.example.layeredarchitecture.view.tdm.ItemTM;
 import javafx.scene.control.TableView;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public interface ItemDAO {
     public ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException;

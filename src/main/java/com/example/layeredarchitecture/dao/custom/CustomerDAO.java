@@ -1,14 +1,11 @@
-package com.example.layeredarchitecture.dao;
+package com.example.layeredarchitecture.dao.custom;
 
-import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.CustomerDTO;
 import com.example.layeredarchitecture.view.tdm.CustomerTM;
 import javafx.scene.control.TableView;
 
 import java.sql.*;
 import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
 
 public interface CustomerDAO {
     public ArrayList<CustomerDTO> loadAllCustomers() throws SQLException, ClassNotFoundException;
