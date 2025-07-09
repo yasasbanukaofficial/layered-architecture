@@ -41,8 +41,7 @@ public class OrderDAOImpl {
         Connection connection = DBConnection.getDbConnection().getConnection();
         try {
             connection.setAutoCommit(false);
-
-            if (!existsOrder(orderId)){
+            if (existsOrder(orderId)){
                 connection.rollback();
                 connection.setAutoCommit(true);
                 return false;
@@ -54,7 +53,6 @@ public class OrderDAOImpl {
                 return false;
             }
 
-
             for (OrderDetailDTO detail : orderDetails) {
                 OrderDetailDAOImpl orderDetailDAO = new OrderDetailDAOImpl();
                 if (!orderDetailDAO.saveOrderDetails(new OrderDetailDTO(orderId, detail.getItemCode(), detail.getQty(), detail.getUnitPrice()))) {
@@ -62,7 +60,6 @@ public class OrderDAOImpl {
                     connection.setAutoCommit(true);
                     return false;
                 }
-
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
