@@ -9,7 +9,6 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.math.BigDecimal;
 
 public class ItemDAOImpl {
     public ArrayList<ItemDTO> loadAllItems() throws SQLException, ClassNotFoundException {

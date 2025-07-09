@@ -2,13 +2,11 @@ package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.ItemDTO;
-import com.example.layeredarchitecture.model.OrderDTO;
 import com.example.layeredarchitecture.model.OrderDetailDTO;
+import com.example.layeredarchitecture.view.tdm.ItemTM;
 
-import java.math.BigDecimal;
 import java.sql.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAOImpl {
@@ -45,15 +43,9 @@ public class OrderDAOImpl {
                 return false;
             }
 
-            stm = connection.prepareStatement("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
-
             for (OrderDetailDTO detail : orderDetails) {
-                stm.setString(1, orderId);
-                stm.setString(2, detail.getItemCode());
-                stm.setBigDecimal(3, detail.getUnitPrice());
-                stm.setInt(4, detail.getQty());
-
-                if (stm.executeUpdate() != 1) {
+                OrderDetailDAOImpl orderDetailDAO = new OrderDetailDAOImpl();
+                if (!orderDetailDAO.saveOrderDetails(orderId, orderDetails)) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
@@ -62,13 +54,7 @@ public class OrderDAOImpl {
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
-                PreparedStatement pstm = connection.prepareStatement("UPDATE Item SET description=?, unitPrice=?, qtyOnHand=? WHERE code=?");
-                pstm.setString(1, item.getDescription());
-                pstm.setBigDecimal(2, item.getUnitPrice());
-                pstm.setInt(3, item.getQtyOnHand());
-                pstm.setString(4, item.getCode());
-
-                if (!(pstm.executeUpdate() > 0)) {
+                if (!itemDAO.updateItem(new ItemTM(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
