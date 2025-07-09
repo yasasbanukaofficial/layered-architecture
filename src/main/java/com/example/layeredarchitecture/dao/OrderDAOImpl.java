@@ -28,24 +28,36 @@ public class OrderDAOImpl {
         return stm.executeQuery().next();
     }
 
-    public boolean saveOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
+    private boolean saveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException {
+        Connection connection = DBConnection.getDbConnection().getConnection();
+        PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
+        stm.setString(1, orderId);
+        stm.setDate(2, Date.valueOf(orderDate));
+        stm.setString(3, customerId);
+        return stm.executeUpdate() > 0;
+    }
+
+    public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         try {
             connection.setAutoCommit(false);
-            PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
-            stm.setString(1, orderId);
-            stm.setDate(2, Date.valueOf(orderDate));
-            stm.setString(3, customerId);
 
-            if (stm.executeUpdate() != 1) {
+            if (!existsOrder(orderId)){
                 connection.rollback();
                 connection.setAutoCommit(true);
                 return false;
             }
 
+            if (!saveOrder(orderId, orderDate, customerId)) {
+                connection.rollback();
+                connection.setAutoCommit(true);
+                return false;
+            }
+
+
             for (OrderDetailDTO detail : orderDetails) {
                 OrderDetailDAOImpl orderDetailDAO = new OrderDetailDAOImpl();
-                if (!orderDetailDAO.saveOrderDetails(orderId, orderDetails)) {
+                if (!orderDetailDAO.saveOrderDetails(new OrderDetailDTO(orderId, detail.getItemCode(), detail.getQty(), detail.getUnitPrice()))) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
