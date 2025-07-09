@@ -7,8 +7,9 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class OrderDetailDAOImpl {
+public class OrderDetailDAOImpl implements OrderDetailDAO {
 
+    @Override
     public boolean saveOrderDetails(OrderDetailDTO orderDetailDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
@@ -23,6 +24,7 @@ public class OrderDetailDAOImpl {
         return true;
     }
 
+    @Override
     public List<OrderDetailDTO> getOrderDetails(String orderId) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("SELECT * FROM OrderDetails WHERE oid=?");
@@ -40,6 +42,7 @@ public class OrderDetailDAOImpl {
         return details;
     }
 
+    @Override
     public boolean existsOrderDetail(String orderId, String itemCode) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?");

@@ -9,10 +9,11 @@ import java.sql.*;
 import java.time.LocalDate;
 import java.util.List;
 
-public class OrderDAOImpl {
+public class OrderDAOImpl implements  OrderDAO {
 
     private ItemDAOImpl itemDAO = new ItemDAOImpl();
 
+    @Override
     public String generateNewOrderId() throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         Statement stm = connection.createStatement();
@@ -21,6 +22,7 @@ public class OrderDAOImpl {
         return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
     }
 
+    @Override
     public boolean existsOrder(String orderId) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("SELECT oid FROM `Orders` WHERE oid=?");
@@ -28,7 +30,8 @@ public class OrderDAOImpl {
         return stm.executeQuery().next();
     }
 
-    private boolean saveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException {
+    @Override
+    public boolean saveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement stm = connection.prepareStatement("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)");
         stm.setString(1, orderId);
@@ -37,6 +40,7 @@ public class OrderDAOImpl {
         return stm.executeUpdate() > 0;
     }
 
+    @Override
     public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         try {
@@ -80,6 +84,7 @@ public class OrderDAOImpl {
         }
     }
 
+    @Override
     public ItemDTO findItem(String code) {
         try {
             Connection connection = DBConnection.getDbConnection().getConnection();
