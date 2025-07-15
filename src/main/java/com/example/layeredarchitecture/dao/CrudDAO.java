@@ -1,8 +1,6 @@
 package com.example.layeredarchitecture.dao;
 
 import com.example.layeredarchitecture.model.CustomerDTO;
-import com.example.layeredarchitecture.view.tdm.CustomerTM;
-import javafx.scene.control.TableView;
 
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -20,5 +18,5 @@ public interface CrudDAO<T> {
 
     public String generateNewId() throws SQLException, ClassNotFoundException;
 
-    public CustomerDTO search(String newValue) throws SQLException, ClassNotFoundException;
+    public T search(String newValue) throws SQLException, ClassNotFoundException;
 }
