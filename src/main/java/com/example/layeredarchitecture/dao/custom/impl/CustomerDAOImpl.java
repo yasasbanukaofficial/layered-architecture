@@ -65,12 +65,13 @@ public class CustomerDAOImpl implements CustomerDAO {
 
     @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
-        String id = SQLUtil.execute("SELECT id FROM Customer ORDER BY id DESC LIMIT 1;");
-        if (id != null) {
-            int newCustomerId = Integer.parseInt(id.replace("C00-", "")) + 1;
-            return String.format("C00-%03d", newCustomerId);
+        ResultSet rst = SQLUtil.execute("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
+        if (rst.next()) {
+            String code = rst.getString("code");
+            int newItemCode = Integer.parseInt(code.replace("I00-", "")) + 1;
+            return String.format("I00-%03d", newItemCode);
         } else {
-            return "C00-001";
+            return "I00-001";
         }
     }
 

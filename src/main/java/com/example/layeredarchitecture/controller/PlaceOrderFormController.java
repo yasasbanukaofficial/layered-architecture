@@ -1,5 +1,8 @@
 package com.example.layeredarchitecture.controller;
 
+import com.example.layeredarchitecture.dao.custom.CustomerDAO;
+import com.example.layeredarchitecture.dao.custom.ItemDAO;
+import com.example.layeredarchitecture.dao.custom.OrderDAO;
 import com.example.layeredarchitecture.dao.custom.impl.CustomerDAOImpl;
 import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
 import com.example.layeredarchitecture.dao.custom.impl.OrderDAOImpl;
@@ -50,9 +53,9 @@ public class PlaceOrderFormController {
     public Label lblTotal;
     private String orderId;
 
-    private final CustomerDAOImpl customerDAO = new CustomerDAOImpl();
-    private final ItemDAOImpl itemDAO = new ItemDAOImpl();
-    private final OrderDAOImpl orderDAO = new OrderDAOImpl();
+    private CustomerDAO customerDAO = new CustomerDAOImpl();
+    private ItemDAO itemDAO = new ItemDAOImpl();
+    private OrderDAO orderDAO = new OrderDAOImpl();
 
     public void initialize() throws SQLException, ClassNotFoundException {
 
