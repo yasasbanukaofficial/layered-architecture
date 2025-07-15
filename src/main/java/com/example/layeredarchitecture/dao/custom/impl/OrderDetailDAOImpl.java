@@ -15,19 +15,16 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
     public boolean saveOrderDetails(OrderDetailDTO orderDetailDTO) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute(
                 "INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)",
-                    orderDetailDTO.getOid(),
-                    orderDetailDTO.getItemCode(),
-                    orderDetailDTO.getUnitPrice(),
-                    orderDetailDTO.getQty()
+                orderDetailDTO.getOid(),
+                orderDetailDTO.getItemCode(),
+                orderDetailDTO.getUnitPrice(),
+                orderDetailDTO.getQty()
         );
     }
 
     @Override
     public List<OrderDetailDTO> getOrderDetails(String orderId) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM OrderDetails WHERE oid=?");
-        stm.setString(1, orderId);
-        ResultSet rst = stm.executeQuery();
+        ResultSet rst = SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=?", orderId);
 
         List<OrderDetailDTO> details = new ArrayList<>();
         while (rst.next()) {
@@ -42,7 +39,8 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public boolean existsOrderDetail(String orderId, String itemCode) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode) != null;
+        ResultSet rst = SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode);
+        return rst.next();
     }
 
     @Override

@@ -16,10 +16,7 @@ import java.util.List;
 public class ItemDAOImpl implements ItemDAO {
     @Override
     public ArrayList<ItemDTO> loadAll() throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        Statement stm = connection.createStatement();
-        ResultSet rst = stm.executeQuery("SELECT * FROM Item");
-
+        ResultSet rst = SQLUtil.execute("SELECT * FROM Item");
         ArrayList <ItemDTO> items = new ArrayList<>();
         while (rst.next()) {
             items.add(new ItemDTO(rst.getString("code"), rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand")));
@@ -46,7 +43,7 @@ public class ItemDAOImpl implements ItemDAO {
                 itemDTO.getUnitPrice(),
                 itemDTO.getQtyOnHand(),
                 itemDTO.getCode()
-                );
+        );
     }
 
     @Override
@@ -56,13 +53,15 @@ public class ItemDAOImpl implements ItemDAO {
 
     @Override
     public boolean exists(String code) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT * FROM Item WHERE code=?", code) != null;
+        ResultSet rst = SQLUtil.execute("SELECT * FROM Item WHERE code=?", code);
+        return rst.next();
     }
 
     @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
-        String id = SQLUtil.execute("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
-        if (id != null) {
+        ResultSet rst = SQLUtil.execute("SELECT code FROM Item ORDER BY code DESC LIMIT 1;");
+        if (rst.next()) {
+            String id = rst.getString("code");
             int newItemId = Integer.parseInt(id.replace("I00-", "")) + 1;
             return String.format("I00-%03d", newItemId);
         } else {
