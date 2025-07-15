@@ -27,22 +27,22 @@ public class CustomerDAOImpl implements CustomerDAO {
     }
 
     @Override
-    public boolean save(CustomerTM customerTM) throws SQLException, ClassNotFoundException {
+    public boolean save(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("INSERT INTO Customer (id,name, address) VALUES (?,?,?)");
-        pstm.setString(1, customerTM.getId());
-        pstm.setString(2, customerTM.getName());
-        pstm.setString(3, customerTM.getAddress());
+        pstm.setString(1, customerDTO.getId());
+        pstm.setString(2, customerDTO.getName());
+        pstm.setString(3, customerDTO.getAddress());
         return pstm.executeUpdate() > 0;
     }
 
     @Override
-    public boolean update(CustomerTM customerTM) throws SQLException, ClassNotFoundException {
+    public boolean update(CustomerDTO customerDTO) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         PreparedStatement pstm = connection.prepareStatement("UPDATE Customer SET name=?, address=? WHERE id=?");
-        pstm.setString(1, customerTM.getName());
-        pstm.setString(2, customerTM.getAddress());
-        pstm.setString(3, customerTM.getId());
+        pstm.setString(1, customerDTO.getName());
+        pstm.setString(2, customerDTO.getAddress());
+        pstm.setString(3, customerDTO.getId());
         return pstm.executeUpdate() > 0;
     }
 
@@ -73,13 +73,6 @@ public class CustomerDAOImpl implements CustomerDAO {
         } else {
             return "C00-001";
         }
-    }
-
-    @Override
-    public String getLastCustomerId(TableView<CustomerTM> tblCustomers) {
-        List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
-        Collections.sort(tempCustomersList);
-        return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
 
     @Override

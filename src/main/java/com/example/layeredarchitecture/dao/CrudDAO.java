@@ -8,7 +8,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 
 public interface CrudDAO<T> {
-    public ArrayList<CustomerDTO> loadAll() throws SQLException, ClassNotFoundException;
+    public ArrayList<T> loadAll() throws SQLException, ClassNotFoundException;
 
     public boolean save(T customerTM) throws SQLException, ClassNotFoundException;
 

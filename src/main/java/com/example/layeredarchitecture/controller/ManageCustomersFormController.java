@@ -22,6 +22,8 @@ import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 
 public class ManageCustomersFormController {
@@ -220,7 +222,9 @@ public class ManageCustomersFormController {
     }
 
     private String getLastCustomerId() {
-        return customerDAO.getLastCustomerId(tblCustomers);
+        List<CustomerTM> tempCustomersList = new ArrayList<>(tblCustomers.getItems());
+        Collections.sort(tempCustomersList);
+        return tempCustomersList.get(tempCustomersList.size() - 1).getId();
     }
 
 }

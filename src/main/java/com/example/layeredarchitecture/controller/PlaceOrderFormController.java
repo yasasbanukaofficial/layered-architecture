@@ -318,10 +318,8 @@ public class PlaceOrderFormController {
         return false;
     }
 
-
     public ItemDTO findItem(String code) {
         return orderDAO.findItem(code);
     }
-
 
 }
