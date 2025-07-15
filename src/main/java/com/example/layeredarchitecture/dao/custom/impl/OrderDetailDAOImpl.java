@@ -1,6 +1,7 @@
 package com.example.layeredarchitecture.dao.custom.impl;
 
 import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
+import com.example.layeredarchitecture.dao.custom.SQLUtil;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.model.OrderDetailDTO;
 
@@ -12,17 +13,13 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public boolean saveOrderDetails(OrderDetailDTO orderDetailDTO) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        PreparedStatement stm = connection.prepareStatement("INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)");
-        stm.setString(1, orderDetailDTO.getOid());
-        stm.setString(2, orderDetailDTO.getItemCode());
-        stm.setBigDecimal(3, orderDetailDTO.getUnitPrice());
-        stm.setInt(4, orderDetailDTO.getQty());
-
-        if (stm.executeUpdate() != 1) {
-            return false;
-        }
-        return true;
+        return SQLUtil.execute(
+                "INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)",
+                    orderDetailDTO.getOid(),
+                    orderDetailDTO.getItemCode(),
+                    orderDetailDTO.getUnitPrice(),
+                    orderDetailDTO.getQty()
+        );
     }
 
     @Override
@@ -45,10 +42,6 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public boolean existsOrderDetail(String orderId, String itemCode) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        PreparedStatement stm = connection.prepareStatement("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?");
-        stm.setString(1, orderId);
-        stm.setString(2, itemCode);
-        return stm.executeQuery().next();
+        return SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode) != null;
     }
 }
