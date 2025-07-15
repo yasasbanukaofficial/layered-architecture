@@ -68,7 +68,7 @@ public class OrderDAOImpl implements OrderDAO {
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
-                if (!itemDAO.updateItem(new ItemTM(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
+                if (!itemDAO.update(new ItemDTO(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
