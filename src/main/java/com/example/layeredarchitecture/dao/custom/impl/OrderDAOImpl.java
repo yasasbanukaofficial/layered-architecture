@@ -9,6 +9,7 @@ import com.example.layeredarchitecture.view.tdm.ItemTM;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 public class OrderDAOImpl implements OrderDAO {
@@ -16,19 +17,9 @@ public class OrderDAOImpl implements OrderDAO {
     private ItemDAOImpl itemDAO = new ItemDAOImpl();
 
     @Override
-    public String generateNewOrderId() throws SQLException, ClassNotFoundException {
-        String id = SQLUtil.execute("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
-        if (id != null) {
-            int newOrderId = Integer.parseInt(id.replace("O00-", "")) + 1;
-            return String.format("O00-%03d", newOrderId);
-        } else {
-            return "O00-001";
-        }
-    }
-
-    @Override
-    public boolean existsOrder(String orderId) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("SELECT * FROM `Orders` WHERE oid=?", orderId) != null;
+    public String generateNewId() throws SQLException, ClassNotFoundException {
+        ResultSet rst = SQLUtil.execute("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
+        return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
     }
 
     @Override
@@ -46,7 +37,7 @@ public class OrderDAOImpl implements OrderDAO {
         Connection connection = DBConnection.getDbConnection().getConnection();
         try {
             connection.setAutoCommit(false);
-            if (existsOrder(orderId)){
+            if (exists(orderId)){
                 connection.rollback();
                 connection.setAutoCommit(true);
                 return false;
@@ -89,12 +80,51 @@ public class OrderDAOImpl implements OrderDAO {
     public ItemDTO findItem(String code) {
         try {
             ResultSet rst = SQLUtil.execute("SELECT * FROM Item WHERE code=?", code);
-            return new ItemDTO(code, rst.getString("description"), rst.getBigDecimal("unitPrice"), rst.getInt("qtyOnHand"));
+            if (rst.next()) {
+                return new ItemDTO(code, 
+                    rst.getString("description"), 
+                    rst.getBigDecimal("unitPrice"), 
+                    rst.getInt("qtyOnHand"));
+            } else {
+                throw new RuntimeException("Failed to find the Item " + code);
+            }
         } catch (SQLException e) {
             throw new RuntimeException("Failed to find the Item " + code, e);
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
+            throw new RuntimeException("Failed to find the Item " + code, e);
         }
+    }
+
+    @Override
+    public OrderDetailDTO search(String newValue) throws SQLException, ClassNotFoundException {
         return null;
     }
+
+    @Override
+    public ArrayList<OrderDetailDTO> loadAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean save(OrderDetailDTO customerTM) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update(OrderDetailDTO customerTM) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean exists(String orderId) throws SQLException, ClassNotFoundException {
+        ResultSet rst =  SQLUtil.execute("SELECT * FROM `Orders` WHERE oid=?", orderId);
+        return rst.next();
+    }
+
 }
