@@ -44,4 +44,39 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
     public boolean existsOrderDetail(String orderId, String itemCode) throws SQLException, ClassNotFoundException {
         return SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode) != null;
     }
+
+    @Override
+    public ArrayList<OrderDetailDTO> loadAll() throws SQLException, ClassNotFoundException {
+        return null;
+    }
+
+    @Override
+    public boolean save(OrderDetailDTO dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean update(OrderDetailDTO dto) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean delete(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public boolean exists(String id) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public String generateNewId() throws SQLException, ClassNotFoundException {
+        return "";
+    }
+
+    @Override
+    public OrderDetailDTO search(String newValue) throws SQLException, ClassNotFoundException {
+        return null;
+    }
 }
