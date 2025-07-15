@@ -8,9 +8,9 @@ import java.util.ArrayList;
 public interface CrudDAO<T> {
     public ArrayList<T> loadAll() throws SQLException, ClassNotFoundException;
 
-    public boolean save(T customerTM) throws SQLException, ClassNotFoundException;
+    public boolean save(T dto) throws SQLException, ClassNotFoundException;
 
-    public boolean update(T customerTM) throws SQLException, ClassNotFoundException;
+    public boolean update(T dto) throws SQLException, ClassNotFoundException;
 
     public boolean delete(String id) throws SQLException, ClassNotFoundException;
 
