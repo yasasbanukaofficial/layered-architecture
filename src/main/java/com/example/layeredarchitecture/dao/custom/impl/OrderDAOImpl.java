@@ -28,50 +28,6 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        try {
-            connection.setAutoCommit(false);
-            if (exists(orderId)){
-                connection.rollback();
-                connection.setAutoCommit(true);
-                return false;
-            }
-
-            if (!saveOrder(orderId, orderDate, customerId)) {
-                connection.rollback();
-                connection.setAutoCommit(true);
-                return false;
-            }
-
-            for (OrderDetailDTO detail : orderDetails) {
-                OrderDetailDAOImpl orderDetailDAO = new OrderDetailDAOImpl();
-                if (!orderDetailDAO.saveOrderDetails(new OrderDetailDTO(orderId, detail.getItemCode(), detail.getQty(), detail.getUnitPrice()))) {
-                    connection.rollback();
-                    connection.setAutoCommit(true);
-                    return false;
-                }
-                ItemDTO item = findItem(detail.getItemCode());
-                item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
-
-                if (!itemDAO.update(new ItemDTO(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
-                    connection.rollback();
-                    connection.setAutoCommit(true);
-                    return false;
-                }
-            }
-
-            connection.commit();
-            return true;
-        } catch (SQLException e) {
-            connection.rollback();
-            throw e;
-        } finally {
-            connection.setAutoCommit(true);
-        }
-    }
-
-    @Override
     public ItemDTO findItem(String code) {
         try {
             ResultSet rst = SQLUtil.executeQuery("SELECT * FROM Item WHERE code=?", code);
