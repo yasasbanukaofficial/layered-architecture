@@ -18,13 +18,13 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
+        ResultSet rst = SQLUtil.executeQuery("SELECT oid FROM `Orders` ORDER BY oid DESC LIMIT 1;");
         return rst.next() ? String.format("OID-%03d", (Integer.parseInt(rst.getString("oid").replace("OID-", "")) + 1)) : "OID-001";
     }
 
     @Override
     public boolean saveOrder(String orderId, LocalDate orderDate, String customerId) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)", orderId, orderDate, customerId);
+        return SQLUtil.executeUpdate("INSERT INTO `Orders` (oid, date, customerID) VALUES (?,?,?)", orderId, orderDate, customerId);
     }
 
     @Override
@@ -74,7 +74,7 @@ public class OrderDAOImpl implements OrderDAO {
     @Override
     public ItemDTO findItem(String code) {
         try {
-            ResultSet rst = SQLUtil.execute("SELECT * FROM Item WHERE code=?", code);
+            ResultSet rst = SQLUtil.executeQuery("SELECT * FROM Item WHERE code=?", code);
             if (rst.next()) {
                 return new ItemDTO(code, 
                     rst.getString("description"), 
@@ -118,7 +118,7 @@ public class OrderDAOImpl implements OrderDAO {
 
     @Override
     public boolean exists(String orderId) throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT * FROM `Orders` WHERE oid=?", orderId);
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM `Orders` WHERE oid=?", orderId);
         return rst.next();
     }
 

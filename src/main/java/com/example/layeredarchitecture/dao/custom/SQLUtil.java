@@ -8,18 +8,20 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class SQLUtil {
-    public static <T> T execute(String sql, Object... ob) throws SQLException, ClassNotFoundException {
-        Connection connection = DBConnection.getDbConnection().getConnection();
-        PreparedStatement stm = connection.prepareStatement(sql);
+    public static ResultSet executeQuery(String sql, Object... ob) throws SQLException, ClassNotFoundException {
+        Connection conn = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = conn.prepareStatement(sql);
         for (int i = 0; i < ob.length; i++) {
-            stm.setObject(i + 1, ob[i]);
+            pstm.setObject(i + 1, ob[i]);
         }
-        if (sql.startsWith("select") || sql.startsWith("SELECT")){
-            ResultSet rst = stm.executeQuery();
-            return (T) rst;
-        } else {
-            int i = stm.executeUpdate();
-            return (T) (Boolean) (i > 0);
+        return pstm.executeQuery();
+    }
+    public static boolean executeUpdate(String sql, Object... ob) throws SQLException, ClassNotFoundException {
+        Connection conn = DBConnection.getDbConnection().getConnection();
+        PreparedStatement pstm = conn.prepareStatement(sql);
+        for (int i = 0; i < ob.length; i++) {
+            pstm.setObject(i + 1, ob[i]);
         }
+        return pstm.executeUpdate()>0;
     }
 }

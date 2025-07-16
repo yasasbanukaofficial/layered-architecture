@@ -13,7 +13,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public boolean saveOrderDetails(OrderDetailDTO orderDetailDTO) throws SQLException, ClassNotFoundException {
-        return SQLUtil.execute(
+        return SQLUtil.executeUpdate(
                 "INSERT INTO OrderDetails (oid, itemCode, unitPrice, qty) VALUES (?,?,?,?)",
                 orderDetailDTO.getOid(),
                 orderDetailDTO.getItemCode(),
@@ -24,7 +24,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public List<OrderDetailDTO> getOrderDetails(String orderId) throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=?", orderId);
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM OrderDetails WHERE oid=?", orderId);
 
         List<OrderDetailDTO> details = new ArrayList<>();
         while (rst.next()) {
@@ -39,7 +39,7 @@ public class OrderDetailDAOImpl implements OrderDetailDAO {
 
     @Override
     public boolean existsOrderDetail(String orderId, String itemCode) throws SQLException, ClassNotFoundException {
-        ResultSet rst = SQLUtil.execute("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode);
+        ResultSet rst = SQLUtil.executeQuery("SELECT * FROM OrderDetails WHERE oid=? AND itemCode=?", orderId, itemCode);
         return rst.next();
     }
 
