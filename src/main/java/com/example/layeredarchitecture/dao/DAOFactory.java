@@ -17,15 +17,15 @@ public class DAOFactory {
     public SuperDAO getDAO(DAOTypes daoTypes){
         switch (daoTypes){
             case CUSTOMER:
-                new CustomerDAOImpl();
+                return new CustomerDAOImpl();
             case ITEM:
-                new ItemDAOImpl();
+                return new ItemDAOImpl();
             case ORDER:
-                new OrderDAOImpl();
+                return new OrderDAOImpl();
             case ORDER_DETAIL:
-                new OrderDetailDAOImpl();
+                return new OrderDetailDAOImpl();
             case QUERY:
-                new QueryDAOImpl();
+                return new QueryDAOImpl();
 
             default:
                 return null;
