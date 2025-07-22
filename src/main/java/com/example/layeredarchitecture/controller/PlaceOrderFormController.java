@@ -204,7 +204,7 @@ public class PlaceOrderFormController {
 
     private void loadAllCustomerIds() {
         try {
-            ArrayList<CustomerDTO> allCustomers = customerBO.getAllCustomer();
+            ArrayList<CustomerDTO> allCustomers = customerBO.getAll();
 
             for (CustomerDTO customerDTO : allCustomers) {
                 cmbCustomerId.getItems().add(customerDTO.getId());
