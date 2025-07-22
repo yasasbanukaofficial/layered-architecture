@@ -23,42 +23,30 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
     private OrderDetailDAO orderDetailDAO = (OrderDetailDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.ORDER_DETAIL);
     private ItemDAO itemDAO = (ItemDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.ITEM);
 
-    @Override
-    public ArrayList<OrderDetailDTO> getAll() throws SQLException, ClassNotFoundException {
-        return null;
-    }
-
-    @Override
     public boolean save(OrderDetailDTO DTO) throws SQLException, ClassNotFoundException {
         return false;
     }
 
-    @Override
     public boolean update(OrderDetailDTO DTO) throws SQLException, ClassNotFoundException {
         return false;
     }
 
-    @Override
     public boolean delete(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 
-    @Override
     public boolean exists(String id) throws SQLException, ClassNotFoundException {
         return false;
     }
 
-    @Override
     public String generateNewId() throws SQLException, ClassNotFoundException {
         return orderDAO.generateNewId();
     }
 
-    @Override
     public OrderDetailDTO search(String newValue) throws SQLException, ClassNotFoundException {
         return null;
     }
 
-    @Override
     public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
         Connection connection = DBConnection.getDbConnection().getConnection();
         try {
@@ -101,7 +89,6 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
         }
     }
 
-    @Override
     public ItemDTO findItem(String code) {
         return orderDAO.findItem(code);
     }

@@ -50,14 +50,4 @@ public class CustomerBOImpl implements CustomerBO {
     public CustomerDTO search(String newValue) throws SQLException, ClassNotFoundException {
         return customerDAO.search(newValue);
     }
-
-    @Override
-    public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
-        return false;
-    }
-
-    @Override
-    public ItemDTO findItem(String code) {
-        return null;
-    }
 }

@@ -49,14 +49,4 @@ public class ItemBOImpl implements ItemBO {
     public ItemDTO search(String newValue) throws SQLException, ClassNotFoundException {
         return itemDAO.search(newValue);
     }
-
-    @Override
-    public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
-        return false;
-    }
-
-    @Override
-    public ItemDTO findItem(String code) {
-        return null;
-    }
 }
