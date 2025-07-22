@@ -77,7 +77,7 @@ public class ManageItemsFormController {
         tblItems.getItems().clear();
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> allItems = itemBO.loadAll();
+            ArrayList<ItemDTO> allItems = itemBO.getAll();
             for (ItemDTO item : allItems) {
                 tblItems.getItems().add(new ItemTM(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()));
             }

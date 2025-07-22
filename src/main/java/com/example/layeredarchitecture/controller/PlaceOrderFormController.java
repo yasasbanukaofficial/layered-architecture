@@ -219,7 +219,7 @@ public class PlaceOrderFormController {
     private void loadAllItemCodes() {
         try {
             /*Get all items*/
-            ArrayList<ItemDTO> allItems = itemBO.loadAll();
+            ArrayList<ItemDTO> allItems = itemBO.getAll();
 
             for (ItemDTO itemDTO : allItems) {
                 cmbItemCode.getItems().add(itemDTO.getCode());

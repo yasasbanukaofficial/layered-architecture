@@ -5,15 +5,18 @@ import com.example.layeredarchitecture.dao.DAOFactory;
 import com.example.layeredarchitecture.dao.custom.ItemDAO;
 import com.example.layeredarchitecture.dao.custom.impl.ItemDAOImpl;
 import com.example.layeredarchitecture.model.ItemDTO;
+import com.example.layeredarchitecture.model.OrderDetailDTO;
 
 import java.sql.SQLException;
+import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 
 public class ItemBOImpl implements ItemBO {
     ItemDAO itemDAO = (ItemDAO) DAOFactory.getInstance().getDAO(DAOFactory.DAOTypes.ITEM);
 
     @Override
-    public ArrayList<ItemDTO> loadAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<ItemDTO> getAll() throws SQLException, ClassNotFoundException {
         return itemDAO.loadAll();
     }
 
@@ -45,5 +48,15 @@ public class ItemBOImpl implements ItemBO {
     @Override
     public ItemDTO search(String newValue) throws SQLException, ClassNotFoundException {
         return itemDAO.search(newValue);
+    }
+
+    @Override
+    public boolean placeOrder(String orderId, LocalDate orderDate, String customerId, List<OrderDetailDTO> orderDetails) throws SQLException, ClassNotFoundException {
+        return false;
+    }
+
+    @Override
+    public ItemDTO findItem(String code) {
+        return null;
     }
 }
