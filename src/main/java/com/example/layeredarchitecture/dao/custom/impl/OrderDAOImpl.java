@@ -4,6 +4,7 @@ import com.example.layeredarchitecture.dao.custom.OrderDAO;
 import com.example.layeredarchitecture.dao.custom.SQLUtil;
 import com.example.layeredarchitecture.dto.ItemDTO;
 import com.example.layeredarchitecture.dto.OrderDetailDTO;
+import com.example.layeredarchitecture.entity.OrderDetail;
 
 import java.sql.*;
 import java.time.LocalDate;
@@ -45,22 +46,22 @@ public class OrderDAOImpl implements OrderDAO {
     }
 
     @Override
-    public OrderDetailDTO search(String newValue) throws SQLException, ClassNotFoundException {
+    public OrderDetail search(String newValue) throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public ArrayList<OrderDetailDTO> loadAll() throws SQLException, ClassNotFoundException {
+    public ArrayList<OrderDetail> loadAll() throws SQLException, ClassNotFoundException {
         return null;
     }
 
     @Override
-    public boolean save(OrderDetailDTO customerTM) throws SQLException, ClassNotFoundException {
+    public boolean save(OrderDetail customerTM) throws SQLException, ClassNotFoundException {
         return false;
     }
 
     @Override
-    public boolean update(OrderDetailDTO customerTM) throws SQLException, ClassNotFoundException {
+    public boolean update(OrderDetail customerTM) throws SQLException, ClassNotFoundException {
         return false;
     }
 

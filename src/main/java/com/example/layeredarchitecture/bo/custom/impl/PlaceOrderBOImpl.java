@@ -8,6 +8,8 @@ import com.example.layeredarchitecture.dao.custom.OrderDetailDAO;
 import com.example.layeredarchitecture.db.DBConnection;
 import com.example.layeredarchitecture.dto.ItemDTO;
 import com.example.layeredarchitecture.dto.OrderDetailDTO;
+import com.example.layeredarchitecture.entity.Item;
+import com.example.layeredarchitecture.entity.OrderDetail;
 
 import java.sql.Connection;
 import java.sql.SQLException;
