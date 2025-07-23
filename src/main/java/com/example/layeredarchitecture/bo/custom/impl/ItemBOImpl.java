@@ -19,17 +19,17 @@ public class ItemBOImpl implements ItemBO {
         for (Item item : items) {
             itemDTOS.add(new ItemDTO(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()));
         }
-        return itemDAO.loadAll();
+        return itemDTOS;
     }
 
     @Override
     public boolean save(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
-        return itemDAO.save(itemDTO);
+        return itemDAO.save(new Item(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand()));
     }
 
     @Override
     public boolean update(ItemDTO itemDTO) throws SQLException, ClassNotFoundException {
-        return itemDAO.update(itemDTO);
+        return itemDAO.update(new Item(itemDTO.getCode(), itemDTO.getDescription(), itemDTO.getUnitPrice(), itemDTO.getQtyOnHand()));
     }
 
     @Override
@@ -49,6 +49,7 @@ public class ItemBOImpl implements ItemBO {
 
     @Override
     public ItemDTO search(String newValue) throws SQLException, ClassNotFoundException {
-        return itemDAO.search(newValue);
+        Item item = itemDAO.search(newValue);
+        return new ItemDTO(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand());
     }
 }

@@ -62,7 +62,7 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
             }
 
             for (OrderDetailDTO detail : orderDetails) {
-                if (!orderDetailDAO.saveOrderDetails(new OrderDetailDTO(orderId, detail.getItemCode(), detail.getQty(), detail.getUnitPrice()))) {
+                if (!orderDetailDAO.saveOrderDetails(new OrderDetail(orderId, detail.getItemCode(), detail.getQty(), detail.getUnitPrice()))) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
@@ -70,7 +70,7 @@ public class PlaceOrderBOImpl implements PlaceOrderBO {
                 ItemDTO item = findItem(detail.getItemCode());
                 item.setQtyOnHand(item.getQtyOnHand() - detail.getQty());
 
-                if (!itemDAO.update(new ItemDTO(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
+                if (!itemDAO.update(new Item(item.getCode(), item.getDescription(), item.getUnitPrice(), item.getQtyOnHand()))) {
                     connection.rollback();
                     connection.setAutoCommit(true);
                     return false;
