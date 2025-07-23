@@ -1,21 +1,20 @@
-package com.example.layeredarchitecture.model;
+package com.example.layeredarchitecture.entity;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
-import java.util.List;
 
 
-public class OrderDTO  {
+public class Order {
     private String orderId;
     private LocalDate orderDate;
     private String customerId;
     private String customerName;
     private BigDecimal orderTotal;
 
-    public OrderDTO() {
+    public Order() {
     }
 
-    public OrderDTO(String orderId, LocalDate orderDate, String customerId, String customerName, BigDecimal orderTotal) {
+    public Order(String orderId, LocalDate orderDate, String customerId, String customerName, BigDecimal orderTotal) {
         this.orderId = orderId;
         this.orderDate = orderDate;
         this.customerId = customerId;
